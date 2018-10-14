@@ -100,6 +100,8 @@ public class Bug2Test {
             System.out.println("************record service finished*************");
             fail("No active booking for room id: 1");
         } catch (RuntimeException ex) {
+            System.out.println("Expected Result: \"PayForServiceCTL: serviceDetailsEntered : bad state : ROOM\"" );
+            System.out.println("System Result: \"" + ex.getMessage() + "\"" );            
             String expectedMessage = "PayForServiceCTL: serviceDetailsEntered : bad state : ROOM";
             String systemMessage = ex.getMessage();
             assertEquals(expectedMessage, systemMessage);
