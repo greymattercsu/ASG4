@@ -49,14 +49,16 @@ public class Bug1Test {
 
     /**
      * So to test All Service charges are reported as 0.00 when checking out ,
-     * first I have booked the room, then checked in, then recorded service (Service type: room service with cost 20) and finally
-     * check out and try to record service to the same room programatically.
+     * first I have booked the room, then checked in, then recorded service
+     * (Service type: room service with cost 20) and finally check out and try
+     * to record service to the same room programatically.
+     * To check the total of the service cost, I have added a accessor method in getTotal() in CheckoutCTL class.
+     * And finally compares the service cost provided with system returned cost. 
      */
     @Test
     public void testZeroServiceCharge() {
         System.out.println("Test All Service charges are reported as 0.00 when checking out.");
         Hotel hotel = new Hotel();
-
         /*------------ for booking -------------*/
         System.out.println("************booking start*************");
         Guest guest = new Guest("name1", "address1", 1123456);
@@ -66,9 +68,7 @@ public class Bug1Test {
         CreditCard creditCard = new CreditCard(CreditCardType.VISA, 1, 2);
         Room room = new Room(1, RoomType.SINGLE);
         Booking booking = room.book(guest, arrivalDate, stayLength, numberOfOccupants, creditCard);//method call and assign to variable that books the room.
-        //booking.checkIn();
         hotel.book(room, guest, arrivalDate, 2, 1, creditCard); //creates the confirmation number for bookingss
-
         long confNumber = booking.getConfirmationNumber();
         System.out.println("************booking end*************");
         /*------------ for booking end -------------*/
@@ -96,9 +96,12 @@ public class Bug1Test {
         CheckoutCTL checkoutCTL = new CheckoutCTL(hotel);
         checkoutCTL.setState();
         checkoutCTL.roomIdEntered(room.getId());
+        System.out.println("Actual Total cost for service: " + cost);
+        System.out.println("System returned cost for service: " + checkoutCTL.getTotal());
         checkoutCTL.completed();
         hotel.checkout(room.getId());
         System.out.println("************check out finished*************");
+        assertEquals(cost, checkoutCTL.getTotal());
     }
 
 }
