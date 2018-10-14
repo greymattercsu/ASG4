@@ -67,7 +67,7 @@ public class Bug1Test {
         int numberOfOccupants = 2;
         CreditCard creditCard = new CreditCard(CreditCardType.VISA, 1, 2);
         Room room = new Room(1, RoomType.SINGLE);
-        Booking booking = room.book(guest, arrivalDate, stayLength, numberOfOccupants, creditCard);//method call and assign to variable that books the room.
+        Booking booking = room.book(guest, arrivalDate, stayLength, numberOfOccupants, creditCard);//method call and assign that books room 
         hotel.book(room, guest, arrivalDate, 2, 1, creditCard); //creates the confirmation number for bookingss
         long confNumber = booking.getConfirmationNumber();
         System.out.println("************booking end*************");
@@ -97,11 +97,12 @@ public class Bug1Test {
         checkoutCTL.setState();
         checkoutCTL.roomIdEntered(room.getId());
         System.out.println("Actual Total cost for service: " + cost);
-        System.out.println("System returned cost for service: " + checkoutCTL.getTotal());
+        double systemReturnedCost = checkoutCTL.getTotal();
+        System.out.println("System returned cost for service: " + systemReturnedCost);
         checkoutCTL.completed();
         hotel.checkout(room.getId());
         System.out.println("************check out finished*************");
-        assertEquals(cost, checkoutCTL.getTotal());
+        assertEquals(cost, systemReturnedCost, 0);
     }
 
 }
